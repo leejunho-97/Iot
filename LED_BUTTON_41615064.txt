@@ -3,7 +3,6 @@ int X = 0;
 int SW = 0;
 int A=0;
 int C=0;
-const int bt = 4;
 
 void setup()
 {
