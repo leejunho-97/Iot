@@ -1,0 +1,42 @@
+int X = 0;
+
+int SW = 0;
+int A=0;
+int C=0;
+const int bt = 4;
+
+void setup()
+{
+  pinMode(4, INPUT);
+  pinMode(2, OUTPUT);
+  Serial.begin(9600);
+}
+
+void loop()
+{
+  SW = digitalRead(4);
+  if (SW == HIGH) {
+    while (digitalRead(4) == HIGH) {
+      delay(5); // Wait for 5 millisecond(s)
+    }
+    if (X == HIGH) {
+      X = LOW;
+    } else {
+      X = HIGH;
+    }
+  }
+  if (X == HIGH) {
+    digitalWrite(2, HIGH);
+  } else {
+    digitalWrite(2, LOW);
+  }
+  for(A=0;A<1;A++)
+  {
+    if(SW==HIGH){
+      C++;
+    Serial.print("count : ");
+    Serial.println(C);
+    }
+  }
+  delay(1); // Wait for 1 millisecond(s)
+}
