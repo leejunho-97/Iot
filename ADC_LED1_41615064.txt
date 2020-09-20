@@ -1,0 +1,24 @@
+//41615064
+int POT = 0;
+
+int mPOT = 0;
+
+void setup()
+{
+  pinMode(A0, INPUT);
+  Serial.begin(9600);
+
+  pinMode(6, OUTPUT);
+}
+
+void loop()
+{
+  POT = analogRead(A0);
+  Serial.print("POT: ");
+  Serial.print(POT);
+  mPOT = map(POT, 0, 1023, 0, 255);
+  analogWrite(6, mPOT);
+  Serial.print(" MAP: ");
+  Serial.println(mPOT);
+  delay(1000); // Wait for 1000 millisecond(s)
+}
