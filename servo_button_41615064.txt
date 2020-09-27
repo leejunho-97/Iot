@@ -1,0 +1,39 @@
+//41615064 ¿Ã¡ÿ»£
+#include <Servo.h>
+
+int SW = 0;
+
+int degree = 0;
+
+int i = 0;
+
+Servo servo_leejunho;
+
+void setup()
+{
+  pinMode(7, INPUT);
+  servo_leejunho.attach(3);
+
+  Serial.begin(9600);
+
+}
+
+void loop()
+{
+  SW = digitalRead(7);
+  if (SW == HIGH) {
+    servo_leejunho.write(150);
+    degree = servo_leejunho.read();
+    Serial.print("degree : ");
+    Serial.println(degree);
+    delay(2000); // Wait for 2000 millisecond(s)
+    servo_leejunho.write(30);
+    degree = servo_leejunho.read();
+    Serial.print("degree : ");
+    Serial.println(degree);
+    }
+    else {
+    servo_leejunho.write(30);
+    degree = servo_leejunho.read();
+  }
+}
