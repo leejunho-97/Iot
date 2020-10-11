@@ -1,0 +1,27 @@
+//41615064 이준호
+int STEP = 4; 
+int DIR = 7;   // Direction
+boolean Button = true ;
+void setup() {
+ pinMode(STEP,OUTPUT); 
+ pinMode(DIR,OUTPUT);
+ digitalWrite(DIR,HIGH); // + Direction 
+ pinMode(2, INPUT) ; // Button pin input   
+}
+void loop() {
+ int Button = digitalRead(2) ;
+ 
+ if ( Button == 1 ) {
+  for(int x = 0; x < 200; x++) {  
+    digitalWrite(STEP,HIGH); 
+    delayMicroseconds(2000); 
+    digitalWrite(STEP,LOW); 
+    delayMicroseconds(2000); 
+  }
+  Button = !Button ;
+ }
+  else {
+   digitalWrite(STEP,LOW); 
+   digitalWrite(STEP,LOW);
+  }
+}
