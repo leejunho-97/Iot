@@ -1,0 +1,40 @@
+// 41615064 이준호
+int STEP = 4; 
+int DIR = 7;   // Direction
+boolean Button = true ;
+void setup() {
+ pinMode(STEP,OUTPUT); 
+ pinMode(DIR,OUTPUT);
+ pinMode(2, INPUT) ; // Button pin input   
+}
+void loop() {
+  int Button = digitalRead(2) ; 
+  
+  if( Button == 1) {
+    digitalWrite(DIR,HIGH); // Makes 200 pulses
+  
+    for(int x = 0; x < 200; x++) {
+      digitalWrite(STEP,HIGH); 
+      delayMicroseconds(1200);
+      digitalWrite(STEP,LOW); 
+      delayMicroseconds(1200);
+    }
+    delay(1000); // One second delay
+
+    digitalWrite(DIR,LOW); //Changes the rotations direction
+  
+    for(int x = 0; x < 400; x++) {// Makes 400 pulses
+      digitalWrite(STEP,HIGH);
+      delayMicroseconds(1200);
+      digitalWrite(STEP,LOW); 
+      delayMicroseconds(1200);
+    }
+    delay(1000);
+    Button = !Button ;
+  }
+  else {
+   digitalWrite(STEP,LOW); 
+   digitalWrite(STEP,LOW);
+   delay(1000);
+  }
+}
