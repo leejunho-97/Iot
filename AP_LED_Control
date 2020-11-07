@@ -1,0 +1,85 @@
+#include <ESP8266WiFi.h>
+#include <ESP8266WebServer.h>
+#define SSID_AP "leejh" // for AP mode
+#define PASSWORD_AP "" // for AP mode
+#define LED_PIN D3 //16 pin 1 of (D0)led 2
+
+IPAddress local_ip(192, 168,  4,  1); //IP for AP mode
+IPAddress gateway(192,  168,  4,  1); //IP for AP mode
+IPAddress subnet(255, 255,  255,  0); //IP for AP mode
+ESP8266WebServer server(80);
+
+int set_case = 0;
+
+void setup() { 
+Serial.begin(9600);
+Serial.println("Wifi Control");
+pinMode(LED_PIN, OUTPUT);
+WiFi.softAP(SSID_AP, PASSWORD_AP); // AP mode
+WiFi.softAPConfig(local_ip, gateway, subnet);
+server.on("/", HTTP_GET, handle_OnConnect);
+server.on("/LedOn", HTTP_GET, handle_LedOn);
+server.on("/LedOff", HTTP_GET, handle_LedOff);
+server.begin();
+Serial.println("ESP8266 web server started...");
+}
+
+void loop() {
+server.handleClient();
+ardu_action();
+}
+
+//HTTP request
+void handle_OnConnect() {
+Serial.println("Client connected");
+server.send(200, "text/html", SendHTML());
+}
+void handle_LedOn(){
+  set_case = 1;
+  Serial.println("Go LedOn...");
+  server.send(200, "text/html", SendHTML());
+}
+void handle_LedOff(){
+  set_case = 2;
+  Serial.println("Go LedOff...");
+  server.send(200, "text/html", SendHTML());
+}
+void ardu_action() {
+  switch(set_case){
+    case 1: digitalWrite(LED_PIN, HIGH);
+    break;
+    case 2: digitalWrite(LED_PIN, LOW);
+    break;
+    }
+}
+String SendHTML(){
+  String html = "<!DOCTYPE html>\n";
+  html += "<html>\n";
+  html += "<head>\n";
+  html += "<title>Wifi Control</title>\n";
+  html += "<meta name=\"viewport\" content=\"width=device-width,initial-scale=1\">\n";
+  html += "<style>\n";
+  html += "html {font-family: Helvetica; display: inline-block; margin: 0px auto; text-align: center;}\n";
+  html += "body {margin-top: 10px;} h2 {color: #444444;margin: 10px auto10px;} h4 {color: #444444;margin-bottom: 10px;}\n";
+  html += ".button {border: 5px solid green; color: white; width: 120px;height: 50px; margin: 5px; padding: 15px 15px; text-align: center; textdecoration: none; font-weight: bold; font-size: 20px; border-radius: 10px;box-shadow: 0 6px #999; cursor: pointer;}\n"; 
+  html += ".button-on {background-color:#700000;}\n";
+  html += ".button-off {background-color:#000070;}\n";
+  html += ".button:active {background-color:#3e8e41; box-shadow: 0 5px #666; transform:translateY(4px);}\n";
+  html += ".center {display: flex; justify-content:center; align-items: center; margin: 10px;}\n";
+  html += "p {font-size: 14px;color:#888;margin-bottom: 10px;}\n";
+  html += "</style>\n";
+  html += "</head>\n";
+  html += "<body>\n";
+  html += "<div align=\"center\">\n";
+  html += "<h2>Wifi Control</h2> <br>\n";
+  html += "<form method=\"GET\">\n";
+  html += "<input class=\"button button-on\" type=\"button\"value=\"1\" onclick=\"window.location.href='/LedOn'\">\n";
+  html += "<br><br>\n";
+  html += "<input class=\"button button-on\" type=\"button\"value=\"2\" onclick=\"window.location.href='/LedOff'\">\n";
+  html += "<br><br>\n";
+  html += "</form>\n";
+  html += "</div>\n";
+  html += "</body>\n";
+  html += "</html>\n";
+return html;
+}
